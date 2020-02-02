@@ -1,20 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Short URL Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
-<div id="app">
-        <input type="text" name="url" v-model="input_url">
-        [[ input_url ]]
-        <button @click="get_short_url">Generate</button>
-        [[ output_url ]]
-</div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Short URL Generator</a>
+    </nav>
+
+    </nav>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col">
+                <div id="app" v-cloak>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-lg" placeholder="Enter link" name="url"
+                            v-model="input_url">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" @click="get_short_url">Generate Short URL</button>
+                    </div>
+                    <p v-if="output_url">
+                        Short URL: <a v-bind:href="output_url">[[ output_url ]]</a>
+                    </p>
+                    <p v-if="url">
+                        </pv-if>
+                        Original URL: <a v-bind:href="url">[[ url ]]</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
 <script>
+    // set axios csrf
     axios.defaults.xsrfCookieName = 'csrftoken'
     axios.defaults.xsrfHeaderName = "X-CSRFToken"
 
@@ -24,24 +55,26 @@
         data: {
             input_url: null,
             output_url: null,
+            url: null
         },
         methods: {
-            get_short_url: function() {
+            get_short_url: function () {
                 axios.post('', {
-                    url: this.input_url
-                }
-                )
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-                .then(function () {
-                    // always executed
-                });
+                        url: this.input_url
+                    })
+                    .then(function (response) {
+                        app.url = app.input_url;
+                        app.output_url = window.location.href + response.data.id;
+                    })
+                    .catch(function (error) {
+                        alert(error);
+                    })
+                    .then(function () {
+                        app.input_url = null;
+                    });
             }
         }
     });
 </script>
+
 </html>
