@@ -10,9 +10,9 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import UrlMappingTable
 
 
-@ensure_csrf_cookie
 class UrlView(View):
     # redirect to matching url
+    @ensure_csrf_cookie
     def get(self, request, id=None):
         if not id:
             return render(request, template_name='index.html')
