@@ -6,13 +6,14 @@ from django.conf import settings
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.http.response import HttpResponseBadRequest, HttpResponseServerError, JsonResponse
 from django.views.generic import View
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import UrlMappingTable
 
 
 class UrlView(View):
     # redirect to matching url
-    @ensure_csrf_cookie
+    @method_decorator(ensure_csrf_cookie)
     def get(self, request, id=None):
         if not id:
             return render(request, template_name='index.html')
