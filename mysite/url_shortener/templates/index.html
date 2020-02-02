@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+        <input type="text" name="url" v-model="input_url">
+        [[ input_url ]]
+        <button @click="get_short_url">Generate</button>
+        [[ output_url ]]
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+<script>
+    axios.defaults.xsrfCookieName = 'csrftoken'
+    axios.defaults.xsrfHeaderName = "X-CSRFToken"
+
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        data: {
+            input_url: null,
+            output_url: null,
+        },
+        methods: {
+            get_short_url: function() {
+                axios.post('', {
+                    url: this.input_url
+                }
+                )
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+            }
+        }
+    });
+</script>
+</html>
